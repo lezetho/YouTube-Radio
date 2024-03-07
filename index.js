@@ -3,7 +3,7 @@ const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const { joinVoiceChannel, createAudioResource, createAudioPlayer, NoSubscriberBehavior, AudioPlayerStatus, } = require('@discordjs/voice');
 const ytdl = require('ytdl-core');
-const { token } = require('./config.json');
+const { token, dj, targetChannel, clientID, guildID } = require('./config.json');
 
 
 const client = new Client({
@@ -13,8 +13,8 @@ const client = new Client({
   },
 });
 
-const targetChannelId = 'your-target-vc-or-stage';
-const allowedRoleId = 'the-allowed-role-to-control-the-bot';
+const targetChannelId = targetChannel;
+const allowedRoleId = dj;
 
 const commands = [
   {
@@ -30,7 +30,7 @@ const rest = new REST({ version: '9' }).setToken();
     console.log('Started refreshing application (/) commands.');
 
     await rest.put(
-      Routes.applicationGuildCommands('1198701141924515963', '1138907873754234920'),
+      Routes.applicationGuildCommands(`${clientID}`, `${guildID}`),
       { body: commands },
     );
 

@@ -13,7 +13,11 @@ Be sure to edit the `config.json` before running the bot!
 
 ```json
 {
-  "token": "your-token-here"
+  "token": "your-token-here",
+  "dj": "dj-role-id",
+  "targetChannel": "target-channel-id-for-the-bot",
+  "clientID": "your-client-id",
+  "guildID": "your-guild-id"
 }
 ```
 

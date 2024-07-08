@@ -1,0 +1,29 @@
+{
+  "name": "youtube-radio",
+  "version": "1.0.0",
+  "description": "A simple radio that allows users to listen in 24/7 to YouTube songs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lezetho/youtube-radio.git"
+  },
+  "author": "@lezeth0",
+  "license": "SEE LICENSE IN LICENSE.txt",
+  "bugs": {
+    "url": "https://github.com/lezetho/youtube-radio/issues"
+  },
+  "homepage": "https://github.com/lezetho/youtube-radio#readme",
+  "dependencies": {
+    "@discordjs/rest": "^2.3.0",
+    "@discordjs/voice": "^0.17.0",
+    "discord-api-types": "^0.37.92",
+    "discord.js": "^13.17.1",
+    "ffmpeg-static": "^5.2.0",
+    "sodium": "^3.0.2",
+    "ytdl-core": "^4.11.5"
+  }
+}

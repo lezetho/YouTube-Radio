@@ -1,3 +1,4 @@
+<img align="center" src="./images/Discord.JS_v13YouTube_Radio.png" alt="Repo Banner">
 # YouTube Radio
 
 The YouTube radio is a bot that takes specific YouTube video URLs and plays it in a specifc channel!
@@ -7,9 +8,9 @@ The YouTube radio is a bot that takes specific YouTube video URLs and plays it i
 git clone https://github.com/lezetho/YouTube-Radio.git
 cd YouTube-Radio
 npm install
-node .
+npm start
 ```
-Be sure to edit the `config.json` before running the bot!
+Be sure to edit the `config.json` before starting the bot.
 
 ```json
 {

@@ -1,4 +1,4 @@
-const { Client, Intents, GatewayIntentBits } = require('discord.js');
+const { Client, Intents } = require('discord.js');
 const { REST } = require('@discordjs/rest');
 const { Routes } = require('discord-api-types/v9');
 const { joinVoiceChannel, createAudioResource, createAudioPlayer, NoSubscriberBehavior, AudioPlayerStatus, } = require('@discordjs/voice');
@@ -23,7 +23,7 @@ const commands = [
   },
 ];
 
-const rest = new REST({ version: '9' }).setToken();
+const rest = new REST({ version: '9' }).setToken(token);
 
 (async () => {
   try {
@@ -69,7 +69,7 @@ client.on('interactionCreate', async (interaction) => {
       });
 
       const videoUrls = [
-        'https://www.youtube.com/watch?v=dQw4w9WgXcQ', //  that's just a example, add as many as you want!
+        'https://www.youtube.com/watch?v=tPEE9ZwTmy0', // example URL
       ];
 
       let currentIndex = 0;
@@ -78,40 +78,34 @@ client.on('interactionCreate', async (interaction) => {
         const videoUrl = videoUrls[currentIndex];
 
         try {
-          if (!videoUrl || typeof videoUrl !== 'string') {
-            console.error('Skipping invalid video URL.');
-            continue;
-          }
-
           console.log(`Fetching video information for ${videoUrl}...`);
           const stream = ytdl(videoUrl, { filter: 'audioonly' });
-
+        
           if (!stream) {
             console.error(`Failed to get stream for ${videoUrl}. Skipping.`);
             continue;
           }
-
+        
           const resource = createAudioResource(stream);
-          const player = createAudioPlayer({
-            behaviors: {
-              noSubscriber: NoSubscriberBehavior.Pause,
-            },
-          });
-
+          const player = createAudioPlayer();
+        
           player.on(AudioPlayerStatus.Idle, () => {
             console.log(`Finished playing ${videoUrl}`);
             currentIndex = (currentIndex + 1) % videoUrls.length;
           });
-
-          player.on('error', (error) => {
-  			    console.error(`Error in player for ${videoUrl}:`, error);
- 			      currentIndex = (currentIndex + 1) % videoUrls.length; // Move to the next song
-		      });
-
-
+        
+          player.on('error', error => {
+            if (error.message.includes('Status code: 403')) {
+              console.error(`Error playing ${videoUrl}, skipping and playing a different video`);
+            } else {
+              console.error(`Error in player for ${videoUrl}:`, error);
+            }
+            currentIndex = (currentIndex + 1) % videoUrls.length;
+          });
+        
           connection.subscribe(player);
           player.play(resource);
-
+        
           await new Promise(resolve => {
             player.once(AudioPlayerStatus.Idle, () => {
               resolve();
@@ -119,11 +113,10 @@ client.on('interactionCreate', async (interaction) => {
           });
         } catch (error) {
           console.error(`Error processing video ${videoUrl}:`, error);
-        }
+        }        
       }
     } catch (error) {
       console.error('Error handling interaction:', error);
-      logger.logToWebhook(`Error handling interaction: ${error.message}`);
       interaction.reply('Failed to join voice channel.');
     }
   }
